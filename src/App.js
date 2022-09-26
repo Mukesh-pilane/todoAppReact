@@ -1,7 +1,9 @@
 import './App.css';
 import { Container } from '@material-ui/core';
 import {makeStyles} from "@material-ui/core"
-import Search from "./components/Search"
+//import Search from "./components/Search"
+import List from "./components/List"
+import InputBar from "./components/InputBar"
 
 const useStyles = makeStyles({
   container :{
@@ -9,6 +11,7 @@ const useStyles = makeStyles({
     borderRadius: "2rem",
     height:500,
     padding:"2rem",
+    maxWidth:400
   }
 })
 
@@ -21,7 +24,8 @@ function App() {
     maxWidth="sm"
     className ={classes.container}
     >
-    <Search />
+    <InputBar />
+    <List />
     </Container>
     </>
   );
