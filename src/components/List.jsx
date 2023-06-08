@@ -8,10 +8,13 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import {Typography, Box, Grow} from "@mui/material"
+import {Actions} from "../store" 
+import Switch from '@mui/material/Switch';
 
-export default function CheckboxList() {
+export default function CheckboxList({todos, dispatch}) {
+  const [completed, setCompleted]= useState(false)
   const [checked, setChecked] = useState(false);
-
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
   };
@@ -20,13 +23,48 @@ export default function CheckboxList() {
     console.log(!e.target.checked)
     setChecked(e.target.checked)
   }
+  let test = todos.filter((item) => item.complete === false);
+  if(completed){
+    test=todos.filter((item) => item.complete);
+  }
   return (
-    <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
+    <>
+    <Box 
+    sx={{
+      display:"flex",
+      alignItems: 'center'
+    }}>
+        <Typography color="secondary">Completed</Typography>
+    <Switch
+  checked={completed}
+  color="secondary"
+  onChange={()=> setCompleted(!completed)}
+  inputProps={{ 'aria-label': 'controlled' }}
+/>
+    </Box>
+    <List 
+    sx={{ 
+    width: '100%',
+    maxWidth: 500, 
+    bgcolor: 'background.paper', 
+    height:300 ,
+    overflow:"scroll",
+    scrollbarWidth: "none",
+    "&::-webkit-scrollbar":{
+        display: "none",
+    } 
+    }}>
 
-          <ListItem
+{test.length!=0 ? test.map((item, index)=>{
+  const {id, name, complete} = item
+  return(
+           <ListItem 
+           key={index}
             secondaryAction={
               <IconButton edge="end" aria-label="comments">
-                <DeleteIcon />
+                <DeleteIcon 
+                onClick ={() => {dispatch({type : Actions.DEL_TODO, payload: {id}});}}
+                />
               </IconButton>
             }
             disablePadding
@@ -35,18 +73,46 @@ export default function CheckboxList() {
               <ListItemIcon>
                 <Checkbox
                   edge="start"
-                  checked={checked}
+                  checked={complete}
                   tabIndex={-1}
+                  disabled={complete}
                   disableRipple
-                  onChange={(e)=>handleCheck(e)}
-                  //inputProps={{ 'aria-labelledby': labelId }}
+                  onChange={
+                  (e)=>{
+                  setTimeout(handleCheck(e),dispatch({type : Actions.DONE_TODO, payload: {id}}), 1000);
+                  }
+                  }
+                
                 />
               </ListItemIcon>
               <ListItemText 
-              primary={`Line item `}
+              primary={name}
               />
             </ListItemButton>
           </ListItem>
+  );
+}): (
+<Box
+sx={{ 
+    width: '100%',
+    maxWidth: 500, 
+    bgcolor: 'background.paper', 
+    height:300 ,
+    overflow:"scroll",
+    display:"flex",
+    alignItems:"center",
+    justifyContent:"center"
+    }}
+>
+<Typography 
+variant="h5" 
+color="gray" 
+component="h2">
+{completed ? "No todo completed" : "No todos yet"}
+</Typography>
+</Box>)
+}
     </List>
+    </>
   );
 }

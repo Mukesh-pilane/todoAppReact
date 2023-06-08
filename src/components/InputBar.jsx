@@ -1,22 +1,24 @@
 import {useState} from 'react'
 import {Typography, TextField, Button} from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
+import IconButton from '@mui/material/IconButton';
+import {Actions} from "../store" 
 
-const InputBar = ()=>{
+const InputBar = ({dispatch})=>{
  const [name, setName] = useState("");
   function handleSubmit(e){
     e.preventDefault()
+    name!=='' && dispatch({type: Actions.ADD_TODO, payload:{name: name}});
     setName("");
   } 
   
 return(
 <>
     <Typography
-  color="primary"
+  color="secondary"
   variant="h5"
   align="center"
   component="h1"
-  
   >
   ToDo
   </Typography>
@@ -33,29 +35,29 @@ return(
 
 <TextField 
 id="standard-basic" 
-placeholder="List" 
+placeholder="add todo" 
 variant="standard"
-color="primary"
+color="secondary"
 value = {name}
 onChange = {e => setName(e.target.value)}
 autoComplete="off"
 fullWidth
 />
-<Button
-color="primary"
+<IconButton
+color="secondary"
 variant="contained"
 type="submit"
 sx={{
   borderRadius:"50%",
   width:55,
-  height:55
+  height:55,
 }}
 disableElevation
 >
 <AddIcon 
 fontSize="large"
 />
-</Button>
+</IconButton>
 
 </form>
 
