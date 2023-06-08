@@ -102,7 +102,7 @@ sx={{
     scrollbarWidth: "none",
     "&::-webkit-scrollbar":{
         display: "none",
-    } 
+    }, 
     display:"flex",
     alignItems:"center",
     justifyContent:"center"
