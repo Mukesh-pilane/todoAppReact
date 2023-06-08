@@ -99,6 +99,10 @@ sx={{
     bgcolor: 'background.paper', 
     height:300 ,
     overflow:"scroll",
+    scrollbarWidth: "none",
+    "&::-webkit-scrollbar":{
+        display: "none",
+    } 
     display:"flex",
     alignItems:"center",
     justifyContent:"center"
